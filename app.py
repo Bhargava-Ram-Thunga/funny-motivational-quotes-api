@@ -1,5 +1,5 @@
-from flask import Flask, Response, request, render_template
-from pymongo import MongoClient
+from flask import Flask, Response, request, render_template #type : ignore
+from pymongo import MongoClient #type: ignore
 import random
 import json
 
@@ -49,4 +49,4 @@ def category():
     )
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
