@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favi.png') }}">
+    <title>Shitty Motivational Quotes API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Hide scrollbars but keep scroll functionality */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none; /* IE/Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+
+      /* Fade-in animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.3s ease-in-out;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen flex flex-col items-center justify-center p-6"
+  >
+    <!-- Header -->
+    <header class="mb-10 text-center">
+      <h1
+        class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-red-500"
+      >
+        💩 Shitty Motivational Quotes API
+      </h1>
+      <p class="mt-3 text-lg text-gray-300 max-w-xl mx-auto text-center">
+        Get life-changing wisdom that will definitely not improve your life… but
+        will make you laugh.
+      </p>
+    </header>
+
+    <!-- API Documentation -->
+    <section
+      class="bg-gray-800/60 rounded-xl shadow-xl p-8 w-full max-w-4xl border border-gray-700"
+    >
+      <h2 class="text-2xl font-semibold mb-4 text-yellow-400">
+        📜 API Endpoints
+      </h2>
+      <ul class="space-y-3 text-gray-300">
+        <li>
+          <code class="bg-gray-900 px-2 py-1 rounded"
+            >GET /random-shit-motivational-quote</code
+          >
+          → Returns a random quote.
+        </li>
+        <li>
+          <code class="bg-gray-900 px-2 py-1 rounded"
+            >GET
+            /random-shit-motivational-quote/?author=&lt;name&gt;&amp;category=&lt;cat&gt;&amp;deepness=&lt;level&gt;</code
+          >
+          → Filter quotes.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Playground -->
+    <section
+      class="bg-gray-800/60 rounded-xl shadow-xl p-8 w-full max-w-4xl border border-gray-700 mt-8"
+    >
+      <h2 class="text-2xl font-semibold mb-4 text-green-400">🎯 Try It Out</h2>
+      <div class="flex flex-wrap gap-4 mb-4">
+        <input
+          id="author"
+          type="text"
+          placeholder="Author"
+          class="px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:ring-2 focus:ring-green-400 outline-none"
+        />
+        <input
+          id="category"
+          type="text"
+          placeholder="Category"
+          class="px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:ring-2 focus:ring-green-400 outline-none"
+        />
+        <input
+          id="deepness"
+          type="number"
+          placeholder="Deepness (1-5)"
+          class="px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:ring-2 focus:ring-green-400 outline-none"
+        />
+        <button
+          onclick="fetchQuote()"
+          class="px-6 py-2 rounded-lg bg-gradient-to-r from-green-400 to-blue-500 hover:scale-105 transition-transform shadow-lg font-bold"
+        >
+          🚀 Get Quote
+        </button>
+      </div>
+
+      <!-- Hidden initially -->
+      <pre
+        id="result"
+        class="code-block overflow-x-auto no-scrollbar hidden p-4 bg-gray-900 rounded-lg border border-gray-700 transition-all duration-300"
+      ></pre>
+    </section>
+
+    <script>
+      async function fetchQuote() {
+        const author = document.getElementById("author").value;
+        const category = document.getElementById("category").value;
+        const deepness = document.getElementById("deepness").value;
+        let url = "/random-shit-motivational-quote/";
+
+        const params = new URLSearchParams();
+        if (author) params.append("author", author);
+        if (category) params.append("category", category);
+        if (deepness) params.append("deepness", deepness);
+
+        if (params.toString()) {
+          url += "?" + params.toString();
+        }
+
+        const res = await fetch(url);
+        const data = await res.json();
+        const resultBox = document.getElementById("result");
+        resultBox.textContent = JSON.stringify(data, null, 2);
+        resultBox.classList.remove("hidden");
+        resultBox.classList.add("animate-fadeIn");
+      }
+    </script>
+  </body>
+</html>
