@@ -1,4 +1,4 @@
-from flask import Flask, Response, request, render_template #type : ignore
+from flask import Flask, Response, request, render_template #type: ignore
 from pymongo import MongoClient #type: ignore
 import random
 import json
