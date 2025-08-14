@@ -104,11 +104,14 @@
         </button>
       </div>
 
-      <!-- Hidden initially -->
-      <pre
-        id="result"
-        class="code-block overflow-x-auto no-scrollbar hidden p-4 bg-gray-900 rounded-lg border border-gray-700 transition-all duration-300"
-      ></pre>
+      <!-- Styled Quote Display -->
+      <div
+        id="quoteBox"
+        class="hidden animate-fadeIn mt-6 p-4 bg-gray-900 rounded-lg border border-gray-700 shadow-lg"
+      >
+        <p id="quoteText" class="text-xl italic text-gray-200"></p>
+        <p id="quoteAuthor" class="mt-2 text-right text-green-400 font-semibold"></p>
+      </div>
     </section>
 
     <script>
@@ -129,10 +132,12 @@
 
         const res = await fetch(url);
         const data = await res.json();
-        const resultBox = document.getElementById("result");
-        resultBox.textContent = JSON.stringify(data, null, 2);
-        resultBox.classList.remove("hidden");
-        resultBox.classList.add("animate-fadeIn");
+
+        // Assuming your API returns { quote: "...", author: "..." }
+        document.getElementById("quoteText").textContent = `“${data.quote || "No quote found"}”`;
+        document.getElementById("quoteAuthor").textContent = `— ${data.author || "Unknown"}`;
+
+        document.getElementById("quoteBox").classList.remove("hidden");
       }
     </script>
   </body>
