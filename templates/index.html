@@ -30,6 +30,22 @@
       .animate-fadeIn {
         animation: fadeIn 0.3s ease-in-out;
       }
+
+      /* Loader animation */
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .loader {
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid #4ade80; /* Tailwind green-400 */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto;
+      }
     </style>
   </head>
   <body
@@ -104,6 +120,11 @@
         </button>
       </div>
 
+      <!-- Loader -->
+      <div id="loader" class="hidden mt-6">
+        <div class="loader"></div>
+      </div>
+
       <!-- Styled Quote Display -->
       <div
         id="quoteBox"
@@ -130,14 +151,25 @@
           url += "?" + params.toString();
         }
 
-        const res = await fetch(url);
-        const data = await res.json();
+        // Show loader, hide quote
+        document.getElementById("loader").classList.remove("hidden");
+        document.getElementById("quoteBox").classList.add("hidden");
 
-        // Assuming your API returns { quote: "...", author: "..." }
-        document.getElementById("quoteText").textContent = `“${data.quote || "No quote found"}”`;
-        document.getElementById("quoteAuthor").textContent = `— ${data.author || "Unknown"}`;
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
 
-        document.getElementById("quoteBox").classList.remove("hidden");
+          // Assuming your API returns { quote: "...", author: "..." }
+          document.getElementById("quoteText").textContent = `“${data.quote || "No quote found"}”`;
+          document.getElementById("quoteAuthor").textContent = `— ${data.author || "Unknown"}`;
+          
+          // Hide loader, show quote
+          document.getElementById("loader").classList.add("hidden");
+          document.getElementById("quoteBox").classList.remove("hidden");
+        } catch (err) {
+          document.getElementById("loader").classList.add("hidden");
+          alert("Failed to fetch quote.");
+        }
       }
     </script>
   </body>
